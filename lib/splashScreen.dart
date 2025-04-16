@@ -18,15 +18,16 @@ class SplashScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               height: 70,
-              child: Image.asset('images/wormsup_logo.png'),
+              child: Image.asset('assets/images/wormsup_logo.png'),
             ),
             SizedBox(height: 10),
             Text(
               'WormsUP',
               style: TextStyle(
                 fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w700,
                 color: Colors.white,
                 fontSize: 30,
               ),
