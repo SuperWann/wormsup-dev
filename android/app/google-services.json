@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "852264246013",
+    "project_id": "ppl-iwan",
+    "storage_bucket": "ppl-iwan.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852264246013:android:cfda2ebe5eaa7f45ebfc94",
+        "android_client_info": {
+          "package_name": "com.example.wormsup_dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPlzGuG-3RUWR1RpNpJjWwip7Xnh4F-NM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

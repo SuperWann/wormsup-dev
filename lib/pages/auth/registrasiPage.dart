@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wormsup_dev/pages/widgets/alert.dart';
+
+import '../../view_model/register_view_model.dart';
 import './loginPage.dart';
 import '../widgets/input_form.dart';
 import '../widgets/button.dart';
@@ -11,13 +15,83 @@ class RegistrasiPage extends StatefulWidget {
 }
 
 class _RegistrasiPageState extends State<RegistrasiPage> {
-  final TextEditingController _controllerNama = TextEditingController();
+  final TextEditingController _controllerUsername = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-  final TextEditingController _controllerKonfirmasiPassword =
-      TextEditingController();
+  final TextEditingController _controllerKonfirmasiPassword = TextEditingController();
 
   @override
+  Future<void> _signUp() async {
+    if (_controllerPassword.text.trim() ==
+        _controllerKonfirmasiPassword.text.trim()) {
+      try {
+        await RegisterViewModel().createUserWithEmailAndPassword(
+            email: _controllerEmail.text.trim(),
+            password: _controllerPassword.text.trim());
+        RegisterViewModel().addUserDetails(
+            username: _controllerUsername.text.trim(),
+            email: _controllerEmail.text.trim());
+        _showDialogSucces();
+      } on FirebaseAuthException catch (e) {
+        switch (e.code) {
+          case 'network-request-failed':
+            _showDialogFail(
+                "Terdapat kesalahan dalam jaringan, coba lagi nanti");
+            break;
+          case 'channel-error':
+            _showDialogFail("Data tidak boleh kosong!");
+            break;
+          case 'invalid-email':
+            _showDialogFail("Pastikan format alamat email anda benar");
+            break;
+          case 'email-already-in-use':
+            _showDialogFail("Alamat email sudah terdaftar");
+            break;
+          default:
+            _showDialogFail('${e.code}: ${e.message}');
+        }
+      }
+    } else if (!usernameValidation(_controllerUsername)) {
+      _showDialogFail("Pastikan karakter nama tidak terlalu pendek");
+    } else {
+      _showDialogFail('Pastikan kata sandi cocok');
+    }
+  }
+
+  bool usernameValidation(TextEditingController username) {
+    return _controllerUsername.text.length >= 3;
+  }
+
+  void _showDialogSucces() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SuccesAlertState(
+          message: "Selamat anda berhasil daftar",
+          onPressed: () => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const LoginPage()), // Ganti HomePage dengan halaman yang sesuai
+            (Route<dynamic> route) => false,
+          ),
+        );
+      },
+    );
+  }
+
+   void _showDialogFail(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return FailAlertState(
+          message: message,
+          onPressed: () => Navigator.pop(context),
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -51,7 +125,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                 SizedBox(height: 25),
 
                 Text(
-                  'Nama Lengkap',
+                  'Username',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 16,
@@ -62,8 +136,8 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                 SizedBox(height: 10),
 
                 InputFormNoIcon(
-                  text: 'Masukkan nama lengkap',
-                  controller: _controllerNama,
+                  text: 'Masukkan username',
+                  controller: _controllerUsername,
                 ),
 
                 SizedBox(height: 10),
@@ -120,7 +194,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                   text: 'Daftar',
                   color: "#6B4F3B",
                   colorText: "#FFFFFF",
-                  onPressed: () {},
+                  onPressed: _signUp ,
                 ),
 
                 SizedBox(height: 20),
