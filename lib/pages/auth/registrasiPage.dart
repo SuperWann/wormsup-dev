@@ -22,7 +22,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   final TextEditingController _controllerKonfirmasiPassword =
       TextEditingController();
 
-  @override
   Future<void> _signUp() async {
     if (_controllerPassword.text.trim() ==
         _controllerKonfirmasiPassword.text.trim()) {
@@ -100,6 +99,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -241,22 +241,22 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                       ],
                     ),
 
-                    SizedBox(height: 25),
+                    // SizedBox(height: 25),
 
-                    Text(
-                      'atau',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black26,
-                      ),
-                    ),
+                    // Text(
+                    //   'atau',
+                    //   style: TextStyle(
+                    //     fontFamily: 'Montserrat',
+                    //     fontWeight: FontWeight.w400,
+                    //     color: Colors.black26,
+                    //   ),
+                    // ),
                   ],
                 ),
 
                 SizedBox(height: 25),
 
-                ButtonGoogle(text: 'Masuk dengan Google', onPressed: () {}),
+                // ButtonGoogle(text: 'Masuk dengan Google', onPressed: () {}),
               ],
             ),
           ),

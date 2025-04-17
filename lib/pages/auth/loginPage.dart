@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wormsup_dev/pages/homepage/homepage.dart';
+import 'package:wormsup_dev/pages/widgets/alert.dart';
+import 'package:wormsup_dev/view_model/login_view_model.dart';
 import './registrasiPage.dart';
 import '../widgets/input_form.dart';
 import '../widgets/button.dart';
@@ -13,6 +17,66 @@ class LoginPage extends StatefulWidget {
 class _LoginpageState extends State<LoginPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
+
+  @override
+  void dispose() {
+    _controllerEmail.dispose();
+    _controllerPassword.dispose();
+    super.dispose();
+  }
+
+  Future<void> _signInWithEmailAndPassword() async {
+    try {
+      await LoginViewModel().signInWithEmailAndPassword(
+        email: _controllerEmail.text.trim(),
+        password: _controllerPassword.text.trim(),
+      );
+      _loginSucces();
+    } on FirebaseAuthException catch (e) {
+      switch ('${e.code}') {
+        case 'network-request-failed':
+          _showDialogFail("Terdapat kesalahan dalam jaringan, coba lagi nanti");
+          break;
+        case 'channel-error':
+          _showDialogFail("Data tidak boleh kosong!");
+          break;
+        case 'invalid-email':
+          _showDialogFail(
+            "Alamat email atau kata sandi yang anda masukan salah",
+          );
+          break;
+        case 'invalid-credential':
+          _showDialogFail(
+            "Alamat email atau kata sandi yang anda masukan salah",
+          );
+          break;
+        default:
+          _showDialogFail('${e.code}: ${e.message}');
+      }
+    }
+  }
+
+  void _loginSucces() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Homepage(),
+      ), // Ganti HomePage dengan halaman yang sesuai
+      (Route<dynamic> route) => false,
+    );
+  }
+
+  void _showDialogFail(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return FailAlertState(
+          message: message,
+          onPressed: () => Navigator.pop(context),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +158,7 @@ class _LoginpageState extends State<LoginPage> {
                   text: 'Masuk',
                   color: "#6B4F3B",
                   colorText: "#FFFFFF",
-                  onPressed: () {},
+                  onPressed: _signInWithEmailAndPassword,
                 ),
 
                 SizedBox(height: 20),
@@ -133,22 +197,22 @@ class _LoginpageState extends State<LoginPage> {
                       ],
                     ),
 
-                    SizedBox(height: 25),
+                    // SizedBox(height: 25),
 
-                    Text(
-                      'atau',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black26,
-                      ),
-                    ),
+                    // Text(
+                    //   'atau',
+                    //   style: TextStyle(
+                    //     fontFamily: 'Montserrat',
+                    //     fontWeight: FontWeight.w400,
+                    //     color: Colors.black26,
+                    //   ),
+                    // ),
                   ],
                 ),
 
-                SizedBox(height: 25),
+                // SizedBox(height: 25),
 
-                ButtonGoogle(text: 'Masuk dengan Google', onPressed: () {}),
+                // ButtonGoogle(text: 'Masuk dengan Google', onPressed: () {}),
               ],
             ),
           ),

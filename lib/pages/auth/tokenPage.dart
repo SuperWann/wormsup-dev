@@ -27,7 +27,6 @@ class _TokenPageState extends State<TokenPage> {
 
   final TextEditingController _controllerToken = TextEditingController();
 
-  @override
   void _cekToken() {
     if (_controllerToken.text.trim() == tokenKode) {
       RegisterViewModel().createUserWithEmailAndPassword(
@@ -75,6 +74,7 @@ class _TokenPageState extends State<TokenPage> {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
