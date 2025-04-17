@@ -5,13 +5,13 @@ class RegisterViewModel {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> createUserWithEmailAndPassword(
-      {required String email, required String password}) async {
+  Future<void> createUserWithEmailAndPassword( 
+      {required String email, required String password}) async { 
     await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
   }
   
-  Future<void> addUserDetails(
+  Future<void> createUserDetails(
       {required String username, required String email}) async {
     String uid = _firebaseAuth.currentUser!.uid;
     await _firestore.collection("users").doc(uid).set({

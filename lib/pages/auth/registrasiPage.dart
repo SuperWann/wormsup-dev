@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wormsup_dev/pages/widgets/alert.dart';
 
-import '../../view_model/register_view_model.dart';
+import './tokenPage.dart';
 import './loginPage.dart';
+
 import '../widgets/input_form.dart';
 import '../widgets/button.dart';
 
@@ -18,25 +19,29 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   final TextEditingController _controllerUsername = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-  final TextEditingController _controllerKonfirmasiPassword = TextEditingController();
+  final TextEditingController _controllerKonfirmasiPassword =
+      TextEditingController();
 
   @override
   Future<void> _signUp() async {
     if (_controllerPassword.text.trim() ==
         _controllerKonfirmasiPassword.text.trim()) {
       try {
-        await RegisterViewModel().createUserWithEmailAndPassword(
-            email: _controllerEmail.text.trim(),
-            password: _controllerPassword.text.trim());
-        RegisterViewModel().addUserDetails(
-            username: _controllerUsername.text.trim(),
-            email: _controllerEmail.text.trim());
-        _showDialogSucces();
+        // await RegisterViewModel().createUserWithEmailAndPassword(
+        //   email: _controllerEmail.text.trim(),
+        //   password: _controllerPassword.text.trim(),
+        // );
+        // await RegisterViewModel().addUserDetails(
+        //   username: _controllerUsername.text.trim(),
+        //   email: _controllerEmail.text.trim(),
+        // );
+        _showTokenPage();
       } on FirebaseAuthException catch (e) {
         switch (e.code) {
           case 'network-request-failed':
             _showDialogFail(
-                "Terdapat kesalahan dalam jaringan, coba lagi nanti");
+              "Terdapat kesalahan dalam jaringan, coba lagi nanti",
+            );
             break;
           case 'channel-error':
             _showDialogFail("Data tidak boleh kosong!");
@@ -62,25 +67,20 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
     return _controllerUsername.text.length >= 3;
   }
 
-  void _showDialogSucces() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return SuccesAlertState(
-          message: "Selamat anda berhasil daftar",
-          onPressed: () => Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    const LoginPage()), // Ganti HomePage dengan halaman yang sesuai
-            (Route<dynamic> route) => false,
-          ),
-        );
-      },
+  void _showTokenPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder:
+            (context) => TokenPage(
+              username: _controllerUsername.text.trim(),
+              email: _controllerEmail.text.trim(),
+              password: _controllerPassword.text.trim(),
+            ),
+      ),
     );
   }
 
-   void _showDialogFail(String message) {
+  void _showDialogFail(String message) {
     showDialog(
       context: context,
       builder: (context) {
@@ -90,6 +90,14 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
         );
       },
     );
+  }
+
+  void dispose() {
+    _controllerUsername.dispose();
+    _controllerEmail.dispose();
+    _controllerPassword.dispose();
+    _controllerKonfirmasiPassword.dispose();
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -194,7 +202,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                   text: 'Daftar',
                   color: "#6B4F3B",
                   colorText: "#FFFFFF",
-                  onPressed: _signUp ,
+                  onPressed: _signUp,
                 ),
 
                 SizedBox(height: 20),
