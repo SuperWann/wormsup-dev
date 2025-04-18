@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wormsup_dev/pages/homepage/homepage.dart';
+import 'package:wormsup_dev/pages/main/navigationPage.dart';
 import 'package:wormsup_dev/pages/widgets/alert.dart';
-import 'package:wormsup_dev/view_model/login_view_model.dart';
+import 'package:wormsup_dev/viewModel/login_view_model.dart';
 import './registrasiPage.dart';
 import '../widgets/input_form.dart';
 import '../widgets/button.dart';
@@ -60,7 +60,7 @@ class _LoginpageState extends State<LoginPage> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (context) => const Homepage(),
+        builder: (context) => const NavigationPage(),
       ), // Ganti HomePage dengan halaman yang sesuai
       (Route<dynamic> route) => false,
     );
