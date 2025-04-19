@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
-class LoginViewModel {
+class LoginViewModel extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  User? get currentUser => _firebaseAuth.currentUser;
+  User? get currUser => _firebaseAuth.currentUser;
+
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
   Future<void> signInWithEmailAndPassword({
     required String email,
@@ -12,5 +14,7 @@ class LoginViewModel {
       email: email,
       password: password,
     );
+    notifyListeners();
+    // print(currUser!.uid);
   }
 }

@@ -29,14 +29,12 @@ class _TokenPageState extends State<TokenPage> {
 
   void _cekToken() {
     if (_controllerToken.text.trim() == tokenKode) {
-      RegisterViewModel().createUserWithEmailAndPassword(
+      RegisterViewModel().registerUser(
+        username: widget.username.trim(),
         email: widget.email.trim(),
         password: widget.password.trim(),
       );
-      RegisterViewModel().createUserDetails(
-        username: widget.username.trim(),
-        email: widget.email.trim(),
-      );
+
       _showDialogSucces("Token anda benar");
     } else {
       _showDialogFail("Token anda salah");
