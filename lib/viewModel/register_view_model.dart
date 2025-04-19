@@ -10,23 +10,22 @@ class RegisterViewModel {
     required String email,
     required String password,
   }) async {
-    try {
-      // 1. Buat user di Firebase Auth
-      UserCredential userCredential = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+    //Buat user di Firebase Auth
+    UserCredential userCredential = await _firebaseAuth
+        .createUserWithEmailAndPassword(email: email, password: password);
 
-      // 2. Ambil UID dari user yang baru saja dibuat
-      String uid = userCredential.user!.uid;
+    //Ambil UID dari user yang baru saja dibuat
+    String uid = userCredential.user!.uid;
 
-      // 3. Simpan data tambahan di Firestore
-      await _firestore.collection("users").doc(uid).set({
-        'username': username,
-        'email': email,
-      });
-    } catch (e) {
-      throw Exception('Registration failed: $e');
-    }
+    //Simpan data tambahan di Firestore
+    await _firestore.collection("users").doc(uid).set({
+      'username': username,
+      'email': email,
+    });
   }
+
+  //kesalahannya yang dibawah ini seharusnya digabung jadi 1, agar uid nya sama
+
   // Future<void> createUserWithEmailAndPassword(
   //     {required String email, required String password}) async {
   //   await _firebaseAuth.createUserWithEmailAndPassword(

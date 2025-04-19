@@ -8,20 +8,6 @@ class MonitoringPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          FirebaseAuth.instance.signOut();
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AuthPage(),
-            ), // Ganti HomePage dengan halaman yang sesuai
-            (Route<dynamic> route) => false,
-          );
-        },
-        child: Text('Logout'),
-      ),
-    );
+    return Center(child: Text('Monitoring Page'));
   }
 }

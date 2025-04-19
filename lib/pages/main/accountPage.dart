@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wormsup_dev/pages/auth/authPage.dart';
 import 'package:wormsup_dev/viewModel/login_view_model.dart';
+import '../widgets/alert.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -20,13 +22,22 @@ class _AccountPageState extends State<AccountPage> {
     currentUser = LoginViewModel().currUser;
   }
 
+  void _konfirmasiLogout() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ConfirmLogout(message: 'Apakah Anda yakin ingin keluar?');
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Profile',
+          'Profil',
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w700,
@@ -35,62 +46,99 @@ class _AccountPageState extends State<AccountPage> {
         ),
       ),
 
-      body:
-          // ignore: unnecessary_null_comparison
-          currentUser!.uid == null
-              ? const Center(child: Text("User not found"))
-              : StreamBuilder<DocumentSnapshot>(
-                stream:
-                    FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(currentUser!.uid)
-                        .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final userData =
-                        snapshot.data!.data() as Map<String, dynamic>;
-                    return Center(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 40),
+      body: StreamBuilder<DocumentSnapshot>(
+        stream:
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(currentUser!.uid)
+                .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final userData = snapshot.data!.data() as Map<String, dynamic>;
+            return Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
 
-                          CircleAvatar(
-                            backgroundColor: const Color.fromARGB(
-                              125,
-                              156,
-                              156,
-                              156,
-                            ),
-                            radius: 80,
-                          ),
+                    CircleAvatar(
+                      backgroundColor: const Color.fromARGB(125, 156, 156, 156),
+                      radius: 80,
+                    ),
 
-                          SizedBox(height: 25),
+                    SizedBox(height: 25),
 
-                          Text(
-                            userData['username'],
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 28,
-                            ),
-                          ),
-
-                          Text(
-                            userData['email'],
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20,
-                              color: Colors.black12,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      userData['username'],
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 28,
                       ),
-                    );
-                  }
-                  return Center(child: CircularProgressIndicator());
-                },
+                    ),
+
+                    Text(
+                      userData['email'],
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                        color: Colors.black38,
+                      ),
+                    ),
+
+                    SizedBox(height: 30),
+
+                    ListTile(
+                      title: Text(
+                        "Edit Profil",
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                      ),
+                      onTap: () {},
+                      trailing: Icon(Icons.arrow_forward_ios),
+                    ),
+
+                    ListTile(
+                      title: Text(
+                        "Panduan",
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                      ),
+                      onTap: () {},
+                      trailing: Icon(Icons.arrow_forward_ios),
+                    ),
+
+                    ListTile(
+                      title: Text(
+                        "Keluar",
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                      ),
+
+                      onTap: () {
+                        _konfirmasiLogout();
+                      },
+                      trailing: Icon(Icons.logout),
+                    ),
+                  ],
+                ),
               ),
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }
