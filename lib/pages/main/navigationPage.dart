@@ -40,19 +40,19 @@ class _NavigationPageState extends State<NavigationPage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: Container(
                 height: 60,
                 decoration: BoxDecoration(
                   color: Color(0xFF6B4F3B), // warna coklat seperti pada gambar
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(25),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildNavIcon(Icons.monitor_rounded, 0),
                     _buildNavIcon(Icons.history, 1),
-                    _buildNavIcon(Icons.person, 2),
+                    _buildNavIcon(Icons.person_outline, 2),
                   ],
                 ),
               ),
@@ -72,7 +72,7 @@ class _NavigationPageState extends State<NavigationPage> {
                 color: Colors.white.withOpacity(
                   0.2,
                 ), // background putih transparan
-                borderRadius: BorderRadius.circular(10), // biar rounded dikit
+                borderRadius: BorderRadius.circular(20), // biar rounded dikit
               )
               : null,
       padding: const EdgeInsets.symmetric(horizontal: 12),

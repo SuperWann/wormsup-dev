@@ -14,6 +14,7 @@ class InputFormNoIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      enableSuggestions: true,
       decoration: InputDecoration(
         hintText: text,
         hintStyle: TextStyle(

@@ -26,14 +26,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
     if (_controllerPassword.text.trim() ==
         _controllerKonfirmasiPassword.text.trim()) {
       try {
-        // await RegisterViewModel().createUserWithEmailAndPassword(
-        //   email: _controllerEmail.text.trim(),
-        //   password: _controllerPassword.text.trim(),
-        // );
-        // await RegisterViewModel().addUserDetails(
-        //   username: _controllerUsername.text.trim(),
-        //   email: _controllerEmail.text.trim(),
-        // );
         _showTokenPage();
       } on FirebaseAuthException catch (e) {
         switch (e.code) {

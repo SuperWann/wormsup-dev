@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wormsup_dev/pages/auth/authPage.dart';
 import 'package:wormsup_dev/viewModel/login_view_model.dart';
+
+import './editAccountPage.dart';
 import '../widgets/alert.dart';
 
 class AccountPage extends StatefulWidget {
@@ -64,6 +66,8 @@ class _AccountPageState extends State<AccountPage> {
 
                     CircleAvatar(
                       backgroundColor: const Color.fromARGB(125, 156, 156, 156),
+                      backgroundImage:
+                          Image.asset('assets/images/rijal.jpg').image,
                       radius: 80,
                     ),
 
@@ -99,7 +103,16 @@ class _AccountPageState extends State<AccountPage> {
                           fontSize: 18,
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) =>
+                                    EditAccountPage(currentUser: currentUser),
+                          ),
+                        );
+                      },
                       trailing: Icon(Icons.arrow_forward_ios),
                     ),
 

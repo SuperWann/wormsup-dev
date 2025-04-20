@@ -121,6 +121,7 @@ class ConfirmLogout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: const Text(
         "Konfirmasi",
         style: TextStyle(
@@ -132,7 +133,7 @@ class ConfirmLogout extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
-        height: 180,
+        height: 60,
         child: Column(
           children: [
             const SizedBox(height: 20),
@@ -151,53 +152,41 @@ class ConfirmLogout extends StatelessWidget {
       ),
 
       actions: [
-        Container(
-          // margin: const EdgeInsets.only(left: 5, right: 5),
-          child: LongButton(
-            text: "Iya",
-            color: "#6B4F3B",
-            colorText: "#FFFFFF",
-            onPressed: () async {
-              // Tampilkan dialog loading
-              showDialog(
-                context: context,
-                barrierDismissible: false, // Supaya tidak bisa ditutup manual
-                builder: (context) {
-                  return const Center(child: CircularProgressIndicator());
-                },
-              );
-
-              // Tunggu selama 3 detik
-              await Future.delayed(const Duration(seconds: 2));
-
-              // Sign out dari Firebase
-              await FirebaseAuth.instance.signOut();
-
-              // Tutup dialog loading
-              Navigator.of(context).pop();
-
-              // Arahkan ke AuthPage
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const AuthPage()),
-                (Route<dynamic> route) => false,
-              );
-            },
-          ),
+        LongButton(
+          text: "Iya",
+          color: "#6B4F3B",
+          colorText: "#FFFFFF",
+          onPressed: () async {
+            // Tampilkan dialog loading
+            showDialog(
+              context: context,
+              barrierDismissible: false, // Supaya tidak bisa ditutup manual
+              builder: (context) {
+                return const Center(child: CircularProgressIndicator());
+              },
+            );
+            await Future.delayed(const Duration(seconds: 2));
+            await FirebaseAuth.instance.signOut();
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pop();
+            // Arahkan ke AuthPage
+            Navigator.pushAndRemoveUntil(
+              // ignore: use_build_context_synchronously
+              context,
+              MaterialPageRoute(builder: (context) => const AuthPage()),
+              (Route<dynamic> route) => false,
+            );
+          },
         ),
 
         SizedBox(height: 10),
-
-        Container(
-          // margin: const EdgeInsets.only(left: 5, right: 5),
-          child: LongButton(
-            text: "Tidak",
-            color: "#FFFFFF",
-            colorText: "#6B4F3B",
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+        LongButton(
+          text: "Tidak",
+          color: "#FFFFFF",
+          colorText: "#6B4F3B",
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ],
     );
