@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wormsup_dev/viewModel/login_view_model.dart';
 
 class MonitoringPage extends StatefulWidget {
   const MonitoringPage({super.key});
@@ -7,40 +10,117 @@ class MonitoringPage extends StatefulWidget {
   State<MonitoringPage> createState() => _MonitoringPageState();
 }
 
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
 class _MonitoringPageState extends State<MonitoringPage> {
+  late User? currentUser;
+  String? username;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = LoginViewModel().currUser;
+    fetchUsername();
+  }
+
+  Future<void> fetchUsername() async {
+    if (currentUser != null) {
+      DocumentSnapshot userData =
+          await _firestore.collection('users').doc(currentUser!.uid).get();
+
+      setState(() {
+        username = userData['username'];
+      });
+    }
+  }
+
+  List<Widget> tabBar = [Text('Kelembapan'), Text('pH Tanah')];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 20),
-          child: Image.asset( 
-            'assets/images/logo_monitor_page.png',
-            height: 80,
-            fit: BoxFit.contain,
-          ),
-        ),
-        title: const Text(
-          'Monitoring',
-          style: TextStyle(
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              child: Icon(Icons.notifications_none_outlined, size: 30),
-              onTap: () {
-                print('notifikasi ditekan');
-              },
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: DefaultTabController(
+        length: 2,
+        initialIndex: 1,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(120),
+            child: AppBar(
+              leadingWidth: 60,
+              leading: Container(
+                padding: EdgeInsets.only(left: 0),
+                child: Image.asset(
+                  'assets/images/logo_monitor_page.png',
+                  height: 100, // atau bisa lebih besar
+                  fit: BoxFit.contain,
+                ),
+              ),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hai,',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    username ?? 'Loading...',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                GestureDetector(
+                  child: Icon(Icons.notifications_none_outlined, size: 30),
+                  onTap: () {
+                    print('notifikasi ditekan');
+                  },
+                ),
+              ],
+              bottom: TabBar(
+                tabs: tabBar,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorWeight: 4,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromARGB(41, 107, 79, 59),
+                ),
+                unselectedLabelStyle: TextStyle(
+                  color: Color.fromARGB(172, 107, 79, 59),
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w700,
+                ),
+                labelColor: Color(0xFF6B4F3B),
+                indicatorColor: Color(0xFF6B4F3B),
+                labelPadding: EdgeInsets.all(15),
+                labelStyle: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
           ),
-        ],
+          body: TabBarView(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Center(child: Text('Kelembapan'))],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Center(child: Text('pH Tanah'))],
+              ),
+            ],
+          ),
+        ),
       ),
-      body: Center(child: Text('Monitoring Page')),
     );
   }
 }

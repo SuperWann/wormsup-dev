@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wormsup_dev/pages/auth/authPage.dart';
 import 'package:wormsup_dev/viewModel/login_view_model.dart';
 
 import './editAccountPage.dart';
@@ -46,6 +45,17 @@ class _AccountPageState extends State<AccountPage> {
             fontSize: 24,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: GestureDetector(
+              child: Icon(Icons.notifications_none_outlined, size: 30),
+              onTap: () {
+                print('notifikasi ditekan');
+              },
+            ),
+          ),
+        ],
       ),
 
       body: StreamBuilder<DocumentSnapshot>(
@@ -113,19 +123,6 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                         );
                       },
-                      trailing: Icon(Icons.arrow_forward_ios),
-                    ),
-
-                    ListTile(
-                      title: Text(
-                        "Panduan",
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {},
                       trailing: Icon(Icons.arrow_forward_ios),
                     ),
 
