@@ -47,39 +47,40 @@ class _EditAccountPageState extends State<EditAccountPage> {
       final newUsername = _controllerUsername.text.trim();
       final newEmail = _controllerEmail.text.trim();
 
-      DocumentSnapshot snapshot =
-          await _firestore.collection("users").doc(currentUser!.uid).get();
-
-      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-
       final userDataFirestore = _firestore
           .collection("users")
           .doc(currentUser!.uid);
 
-      // Update username langsung ke Firestore
-      await userDataFirestore.update({"username": newUsername});
-
-      // Cek dan update email jika berubah
-      if (newEmail != currentUser!.email) {
-        // Verifikasi email sebelum diperbarui
-        await currentUser!.verifyBeforeUpdateEmail(newEmail);
-        await userDataFirestore.update({"email": newEmail});
-
-        // Jangan langsung update ke Firestore — tunggu email diverifikasi!
+      if (newUsername.isEmpty || newEmail.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "Cek email untuk verifikasi sebelum email diperbarui",
-            ),
-          ),
+          SnackBar(content: Text("Username atau email tidak boleh kosong!")),
         );
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Profil berhasil diperbarui")));
-      }
+        await userDataFirestore.update({"username": newUsername});
 
-      Navigator.pop(context);
+        // Cek dan update email jika berubah
+        if (newEmail != currentUser!.email) {
+          // Verifikasi email sebelum diperbarui
+          await currentUser!.verifyBeforeUpdateEmail(newEmail);
+          await userDataFirestore.update({"email": newEmail});
+
+          // Jangan langsung update ke Firestore — tunggu email diverifikasi!
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Cek email untuk verifikasi sebelum email diperbarui",
+              ),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text("Profil berhasil diperbarui")));
+        }
+
+        Navigator.pop(context);
+      }
+      // Update username langsung ke Firestore
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(

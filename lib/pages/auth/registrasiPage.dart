@@ -23,34 +23,40 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       TextEditingController();
 
   Future<void> _signUp() async {
-    if (_controllerPassword.text.trim() ==
-        _controllerKonfirmasiPassword.text.trim()) {
-      try {
-        _showTokenPage();
-      } on FirebaseAuthException catch (e) {
-        switch (e.code) {
-          case 'network-request-failed':
-            _showDialogFail(
-              "Terdapat kesalahan dalam jaringan, coba lagi nanti",
-            );
-            break;
-          case 'channel-error':
-            _showDialogFail("Data tidak boleh kosong!");
-            break;
-          case 'invalid-email':
-            _showDialogFail("Pastikan format alamat email anda benar");
-            break;
-          case 'email-already-in-use':
-            _showDialogFail("Alamat email sudah terdaftar");
-            break;
-          default:
-            _showDialogFail('${e.code}: ${e.message}');
+    if (_controllerEmail.text.isNotEmpty &&
+        _controllerPassword.text.isNotEmpty &&
+        _controllerUsername.text.isNotEmpty) {
+      if (_controllerPassword.text.trim() ==
+          _controllerKonfirmasiPassword.text.trim()) {
+        try {
+          _showTokenPage();
+        } on FirebaseAuthException catch (e) {
+          switch (e.code) {
+            case 'network-request-failed':
+              _showDialogFail(
+                "Terdapat kesalahan dalam jaringan, coba lagi nanti",
+              );
+              break;
+            case 'channel-error':
+              _showDialogFail("Data tidak boleh kosong!");
+              break;
+            case 'invalid-email':
+              _showDialogFail("Pastikan format alamat email anda benar");
+              break;
+            case 'email-already-in-use':
+              _showDialogFail("Alamat email sudah terdaftar");
+              break;
+            default:
+              _showDialogFail('${e.code}: ${e.message}');
+          }
         }
+      } else if (!usernameValidation(_controllerUsername)) {
+        _showDialogFail("Pastikan karakter nama tidak terlalu pendek");
+      } else {
+        _showDialogFail('Pastikan kata sandi cocok');
       }
-    } else if (!usernameValidation(_controllerUsername)) {
-      _showDialogFail("Pastikan karakter nama tidak terlalu pendek");
     } else {
-      _showDialogFail('Pastikan kata sandi cocok');
+      _showDialogFail("Data tidak boleh kosong!");
     }
   }
 
