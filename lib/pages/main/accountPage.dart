@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wormsup_dev/pages/auth/authPage.dart';
 import 'package:wormsup_dev/viewModel/login_view_model.dart';
 
 import './editAccountPage.dart';
@@ -27,7 +28,31 @@ class _AccountPageState extends State<AccountPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return ConfirmLogout(message: 'Apakah Anda yakin ingin keluar?');
+        return Confirm(
+          message: 'Apakah Anda yakin ingin keluar?',
+          height: 60,
+          onPressed: () async {
+            // Tampilkan dialog loading
+            showDialog(
+              context: context,
+              barrierDismissible: false, // Supaya tidak bisa ditutup manual
+              builder: (context) {
+                return const Center(child: CircularProgressIndicator());
+              },
+            );
+            await Future.delayed(const Duration(seconds: 2));
+            await FirebaseAuth.instance.signOut();
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pop();
+            // Arahkan ke AuthPage
+            Navigator.pushAndRemoveUntil(
+              // ignore: use_build_context_synchronously
+              context,
+              MaterialPageRoute(builder: (context) => const AuthPage()),
+              (Route<dynamic> route) => false,
+            );
+          },
+        );
       },
     );
   }

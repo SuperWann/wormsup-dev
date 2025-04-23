@@ -113,10 +113,12 @@ class FailAlertState extends StatelessWidget {
   }
 }
 
-class ConfirmLogout extends StatelessWidget {
+class Confirm extends StatelessWidget {
   final String message;
+  final VoidCallback onPressed;
+  final double height;
 
-  const ConfirmLogout({super.key, required this.message});
+  const Confirm({super.key, required this.message, required this.onPressed, required this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +135,7 @@ class ConfirmLogout extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
-        height: 60,
+        height: height,
         child: Column(
           children: [
             const SizedBox(height: 20),
@@ -156,27 +158,7 @@ class ConfirmLogout extends StatelessWidget {
           text: "Iya",
           color: "#6B4F3B",
           colorText: "#FFFFFF",
-          onPressed: () async {
-            // Tampilkan dialog loading
-            showDialog(
-              context: context,
-              barrierDismissible: false, // Supaya tidak bisa ditutup manual
-              builder: (context) {
-                return const Center(child: CircularProgressIndicator());
-              },
-            );
-            await Future.delayed(const Duration(seconds: 2));
-            await FirebaseAuth.instance.signOut();
-            // ignore: use_build_context_synchronously
-            Navigator.of(context).pop();
-            // Arahkan ke AuthPage
-            Navigator.pushAndRemoveUntil(
-              // ignore: use_build_context_synchronously
-              context,
-              MaterialPageRoute(builder: (context) => const AuthPage()),
-              (Route<dynamic> route) => false,
-            );
-          },
+          onPressed: onPressed,
         ),
 
         SizedBox(height: 10),
