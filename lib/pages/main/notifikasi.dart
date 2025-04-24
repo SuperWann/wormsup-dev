@@ -1,39 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:wormsup_dev/pages/main/notifikasi.dart';
 
-class HistoryPage extends StatefulWidget {
-  const HistoryPage({super.key});
+class NotifikasiPage extends StatefulWidget {
+  const NotifikasiPage({super.key});
 
   @override
-  State<HistoryPage> createState() => _HistoryPageState();
+  State<NotifikasiPage> createState() => _NotifikasiPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> {
+class _NotifikasiPageState extends State<NotifikasiPage> {
   final List<Map<String, dynamic>> logs = [
     {
       'pesan':
-          'Kelembapan kurang dari 15%, penyiraman secara otomatis dijalankan!',
-      'waktu': 'Hari ini',
+          'Kelembapan tanah berada dibawah 15%. Segera hidupkan mesin penyiraman otomatis!',
+      'waktu': 'Sekarang',
+    },
+    {
+      'pesan': 'pH tanah dalam kondisi yang stabil yaitu 6.50',
+      'waktu': '30 menit yang lalu',
+    },
+    {
+      'pesan': 'Kelembapan tanah sudah mencapai titik stabil yaitu 25%',
+      'waktu': '1 jam yang lalu',
     },
     {
       'pesan':
-          'Kelembapan kurang dari 15%, penyiraman secara otomatis dijalankan!',
-      'waktu': '22 April 2025',
+          'Mesin penyiram otomatis sedang menyiram tanah yang kurang lembap.',
+      'waktu': '2 jam yang lalu',
     },
     {
-      'pesan':
-          'Kelembapan kurang dari 15%, penyiraman secara otomatis dijalankan!',
-      'waktu': '20 April 2025',
-    },
-    {
-      'pesan':
-          'Kelembapan kurang dari 15%, penyiraman secara otomatis dijalankan!',
-      'waktu': '18 April 2025',
-    },
-    {
-      'pesan':
-          'Kelembapan kurang dari 15%, penyiraman secara otomatis dijalankan!',
-      'waktu': '16 April 2025',
+      'pesan': 'Kelembapan tanah berada dibawah 15%',
+      'waktu': '4 jam yang lalu',
     },
   ];
 
@@ -43,29 +39,13 @@ class _HistoryPageState extends State<HistoryPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'History',
+          'Notifikasi',
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w700,
             fontSize: 24,
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              child: Icon(Icons.notifications_none_outlined, size: 30),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NotifikasiPage(),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
       ),
       body: Scaffold(
         body: Padding(
@@ -75,11 +55,11 @@ class _HistoryPageState extends State<HistoryPage> {
             itemBuilder: (context, index) {
               final log = logs[index];
               return Card(
-                color: Colors.white,
                 elevation: 0,
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.black12, width: 0.5),
+                  side: BorderSide(color: Colors.black12),
                 ),
                 margin: EdgeInsets.only(bottom: 12),
                 child: Padding(

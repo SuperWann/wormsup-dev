@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wormsup_dev/pages/auth/authPage.dart';
+import 'package:wormsup_dev/pages/main/notifikasi.dart';
 import 'package:wormsup_dev/viewModel/login_view_model.dart';
 
 import './editAccountPage.dart';
@@ -76,7 +77,12 @@ class _AccountPageState extends State<AccountPage> {
             child: GestureDetector(
               child: Icon(Icons.notifications_none_outlined, size: 30),
               onTap: () {
-                print('notifikasi ditekan');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotifikasiPage(),
+                  ),
+                );
               },
             ),
           ),
