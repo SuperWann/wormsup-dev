@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wormsup_dev/pages/auth/authPage.dart';
 import 'package:wormsup_dev/pages/widgets/button.dart';
 
 class SuccesAlertState extends StatelessWidget {
