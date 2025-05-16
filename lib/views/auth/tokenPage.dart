@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:wormsup_dev/pages/auth/loginPage.dart';
-import 'package:wormsup_dev/pages/widgets/alert.dart';
-import 'package:wormsup_dev/pages/widgets/button.dart';
-import 'package:wormsup_dev/pages/widgets/input_form.dart';
+import 'package:wormsup_dev/views/auth/loginPage.dart';
+import 'package:wormsup_dev/views/widgets/alert.dart';
+import 'package:wormsup_dev/views/widgets/button.dart';
+import 'package:wormsup_dev/views/widgets/input_form.dart';
 
 import '../../viewModel/register_view_model.dart';
 

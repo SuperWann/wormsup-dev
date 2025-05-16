@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wormsup_dev/pages/widgets/button.dart';
+import 'package:wormsup_dev/views/widgets/button.dart';
 
 class SuccesAlertState extends StatelessWidget {
   const SuccesAlertState({

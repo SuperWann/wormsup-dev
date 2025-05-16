@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wormsup_dev/pages/main/accountPage.dart';
-import 'package:wormsup_dev/pages/widgets/button.dart';
-import 'package:wormsup_dev/pages/widgets/input_form.dart';
+import 'package:wormsup_dev/views/main/accountPage.dart';
+import 'package:wormsup_dev/views/widgets/button.dart';
+import 'package:wormsup_dev/views/widgets/input_form.dart';
 
 class EditAccountPage extends StatefulWidget {
   final User? currentUser;
@@ -82,7 +82,6 @@ class _EditAccountPageState extends State<EditAccountPage> {
       }
       // Update username langsung ke Firestore
     } catch (e) {
-      print(e);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Gagal memperbarui profil")));

@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wormsup_dev/pages/main/navigationPage.dart';
-import 'package:wormsup_dev/pages/widgets/alert.dart';
+import 'package:wormsup_dev/views/main/navigationPage.dart';
+import 'package:wormsup_dev/views/widgets/alert.dart';
 import 'package:wormsup_dev/viewModel/login_view_model.dart';
-import './registrasiPage.dart';
+import 'registrasiPage.dart';
 import '../widgets/input_form.dart';
 import '../widgets/button.dart';
 

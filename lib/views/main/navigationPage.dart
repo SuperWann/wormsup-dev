@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart ';
 
-import 'package:wormsup_dev/pages/main/monitoringPage.dart';
-import 'package:wormsup_dev/pages/main/historyPage.dart';
-import 'package:wormsup_dev/pages/main/accountPage.dart';
+import 'package:wormsup_dev/views/main/monitoringPage.dart';
+import 'package:wormsup_dev/views/main/historyPage.dart';
+import 'package:wormsup_dev/views/main/accountPage.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});

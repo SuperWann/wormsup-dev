@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wormsup_dev/pages/auth/authPage.dart';
-import 'package:wormsup_dev/pages/main/notifikasi.dart';
+import 'package:wormsup_dev/views/auth/authPage.dart';
+import 'package:wormsup_dev/views/main/notifikasi.dart';
 import 'package:wormsup_dev/viewModel/login_view_model.dart';
 
-import './editAccountPage.dart';
+import 'editAccountPage.dart';
 import '../widgets/alert.dart';
 
 class AccountPage extends StatefulWidget {
@@ -63,6 +63,7 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Colors.white,
         title: Text(
           'Profil',
           style: TextStyle(

@@ -23,21 +23,4 @@ class RegisterViewModel {
       'email': email,
     });
   }
-
-  //kesalahannya yang dibawah ini seharusnya digabung jadi 1, agar uid nya sama
-
-  // Future<void> createUserWithEmailAndPassword(
-  //     {required String email, required String password}) async {
-  //   await _firebaseAuth.createUserWithEmailAndPassword(
-  //       email: email, password: password);
-  // }
-
-  // Future<void> createUserDetails(
-  //     {required String username, required String email}) async {
-  //   String uid = _firebaseAuth.currentUser!.uid;
-  //   await _firestore.collection("users").doc(uid).set({
-  //     'username': username,
-  //     'email': email,
-  //   });
-  // }
 }

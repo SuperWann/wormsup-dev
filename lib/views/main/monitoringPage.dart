@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:wormsup_dev/pages/main/notifikasi.dart';
-import 'package:wormsup_dev/pages/widgets/alert.dart';
+import 'package:wormsup_dev/views/main/notifikasi.dart';
+import 'package:wormsup_dev/views/widgets/alert.dart';
 import 'package:wormsup_dev/viewModel/login_view_model.dart';
 import 'package:percentages_with_animation/percentages_with_animation.dart';
 
@@ -40,49 +40,7 @@ class _MonitoringPageState extends State<MonitoringPage> {
   }
 
   List<Widget> tabBar = [Text('Kelembapan'), Text('pH')];
-  final List<Map<String, String>> riwayat = [
-    {
-      'teks': 'Kelembapan tanah bernilai 25%, Normal.',
-      'tanggal': '20 April, 20:53',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 26%, Normal.',
-      'tanggal': '20 April, 19:35',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 28%, Normal.',
-      'tanggal': '20 April, 18:35',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 32%, Normal.',
-      'tanggal': '20 April, 17:35',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 35%, Normal.',
-      'tanggal': '20 April, 16:35',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 35%, Normal.',
-      'tanggal': '20 April, 16:35',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 35%, Normal.',
-      'tanggal': '20 April, 16:35',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 35%, Normal.',
-      'tanggal': '20 April, 16:35',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 35%, Normal.',
-      'tanggal': '20 April, 16:35',
-    },
-    {
-      'teks': 'Kelembapan tanah bernilai 35%, Normal.',
-      'tanggal': '20 April, 16:35',
-    },
-    // Tambah data lagi jika perlu
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -95,6 +53,7 @@ class _MonitoringPageState extends State<MonitoringPage> {
             preferredSize: Size.fromHeight(115),
             child: AppBar(
               leadingWidth: 60,
+              backgroundColor: Colors.white,
               leading: Container(
                 padding: EdgeInsets.only(left: 0),
                 child: Image.asset(
