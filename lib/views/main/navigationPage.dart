@@ -12,14 +12,6 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
-  // Future<void> signOut() async {
-  //   await ProfileViewModel().signOut();
-  //   Navigator.pushAndRemoveUntil(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => AuthPage()),
-  //     (Route<dynamic> route) => false,
-  //   );
-  // }
 
   int _currentIndex = 0;
 
@@ -34,6 +26,7 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           _pages[_currentIndex],

@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:wormsup_dev/services/firebase_auth_service.dart';
+import 'package:wormsup_dev/services/firebase_perangkat_service.dart';
 import 'package:wormsup_dev/views/main/notifikasi.dart';
 import 'package:wormsup_dev/views/widgets/alert.dart';
-import 'package:wormsup_dev/viewModel/login_view_model.dart';
 import 'package:percentages_with_animation/percentages_with_animation.dart';
 
 class MonitoringPage extends StatefulWidget {
@@ -17,14 +18,16 @@ class MonitoringPage extends StatefulWidget {
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class _MonitoringPageState extends State<MonitoringPage> {
-  late User? currentUser;
+  User? currentUser;
   String? username;
-  late bool? controlStatusPerangkat;
+  bool? controlStatusPerangkat;
+  final AuthService authService = AuthService();
+  final PerangkatService perangkatService = PerangkatService();
 
   @override
   void initState() {
     super.initState();
-    currentUser = LoginViewModel().currUser;
+    currentUser = authService.currUser;
     fetchUsername();
   }
 
@@ -39,6 +42,43 @@ class _MonitoringPageState extends State<MonitoringPage> {
     }
   }
 
+  void konfirmasiMatikanPerangkat(bool statusPerangkat) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Confirm(
+          message:
+              'Perangkat IoT tidak akan melakukan kontrol otomatis untuk menstabilkan kelembapan dan monitoring pH tanah saat  perangkat dimatikan.' +
+              '\n' +
+              '\n' +
+              'Apakah Anda yakin ingin mematikan perangkat?',
+          height: 160,
+          onPressed: () async {
+            perangkatService.updateStatusPerangkat(statusPerangkat);
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
+  void konfirmasiHidupkanPerangkat(bool statusPerangkat) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Confirm(
+          message:
+              'Pastikan perangkat IoT terhubung dengan daya listrik dan WiFi rumah Anda, agar dapat monitoring secara berkala',
+          height: 110,
+          onPressed: () async {
+            perangkatService.updateStatusPerangkat(statusPerangkat);
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
   List<Widget> tabBar = [Text('Kelembapan'), Text('pH')];
 
   @override
@@ -49,6 +89,7 @@ class _MonitoringPageState extends State<MonitoringPage> {
         length: 2,
         initialIndex: 0,
         child: Scaffold(
+          backgroundColor: Colors.white,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(115),
             child: AppBar(
@@ -121,59 +162,9 @@ class _MonitoringPageState extends State<MonitoringPage> {
             ),
           ),
           body: StreamBuilder<DocumentSnapshot>(
-            stream:
-                FirebaseFirestore.instance
-                    .collection('status_perangkat')
-                    .doc('status_perangkat')
-                    .snapshots(),
+            stream: PerangkatService().streamStatusPerangkat(),
             builder: (context, snapshot) {
               final statusPerangkat = snapshot.data?['status'];
-
-              Future<void> updateStatusPerangkat() async {
-                if (statusPerangkat != null) {
-                  await _firestore
-                      .collection('status_perangkat')
-                      .doc('status_perangkat')
-                      .update({'status': !statusPerangkat});
-                }
-              }
-
-              void konfirmasiMatikanPerangkat() {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Confirm(
-                      message:
-                          'Perangkat IoT tidak akan melakukan kontrol otomatis untuk menstabilkan kelembapan dan monitoring pH tanah saat  perangkat dimatikan.' +
-                          '\n' +
-                          '\n' +
-                          'Apakah Anda yakin ingin mematikan perangkat?',
-                      height: 160,
-                      onPressed: () async {
-                        updateStatusPerangkat();
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
-                );
-              }
-
-              void konfirmasiHidupkanPerangkat() {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Confirm(
-                      message:
-                          'Pastikan perangkat IoT terhubung dengan daya listrik dan WiFi rumah Anda, agar dapat monitoring secara berkala',
-                      height: 110,
-                      onPressed: () async {
-                        updateStatusPerangkat();
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
-                );
-              }
 
               if (snapshot.hasData) {
                 return Stack(
@@ -286,11 +277,7 @@ class _MonitoringPageState extends State<MonitoringPage> {
                                   ),
                                   SizedBox(height: 25),
                                   StreamBuilder<DocumentSnapshot>(
-                                    stream:
-                                        FirebaseFirestore.instance
-                                            .collection('perangkat')
-                                            .doc('esp32_1')
-                                            .snapshots(),
+                                    stream: perangkatService.streamDataSensor(),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasError) {
                                         debugPrint(
@@ -361,9 +348,14 @@ class _MonitoringPageState extends State<MonitoringPage> {
                         width: 80,
                         child: FloatingActionButton(
                           onPressed:
-                              statusPerangkat == true
-                                  ? konfirmasiMatikanPerangkat
-                                  : konfirmasiHidupkanPerangkat,
+                              () =>
+                                  statusPerangkat == true
+                                      ? konfirmasiMatikanPerangkat(
+                                        statusPerangkat,
+                                      )
+                                      : konfirmasiHidupkanPerangkat(
+                                        statusPerangkat,
+                                      ),
                           elevation: 0,
                           backgroundColor:
                               statusPerangkat == true

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wormsup_dev/services/firebase_auth_service.dart';
 import 'package:wormsup_dev/views/auth/loginPage.dart';
 import 'package:wormsup_dev/views/widgets/alert.dart';
 import 'package:wormsup_dev/views/widgets/button.dart';
@@ -29,7 +30,7 @@ class _TokenPageState extends State<TokenPage> {
 
   void _cekToken() {
     if (_controllerToken.text.trim() == tokenKode) {
-      RegisterViewModel().registerUser(
+      AuthService().registerUser(
         username: widget.username.trim(),
         email: widget.email.trim(),
         password: widget.password.trim(),

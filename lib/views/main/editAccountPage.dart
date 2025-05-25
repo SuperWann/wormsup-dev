@@ -32,6 +32,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
       // Ambil data pengguna dari Firestore
       DocumentSnapshot snapshot =
           await _firestore.collection("users").doc(currentUser!.uid).get();
+
       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
 
       // setState untuk merubah nilai awal controller pada textField
@@ -91,7 +92,9 @@ class _EditAccountPageState extends State<EditAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
           "Edit Profil",

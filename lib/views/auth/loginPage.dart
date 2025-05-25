@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wormsup_dev/services/firebase_auth_service.dart';
 import 'package:wormsup_dev/views/main/navigationPage.dart';
 import 'package:wormsup_dev/views/widgets/alert.dart';
-import 'package:wormsup_dev/viewModel/login_view_model.dart';
 import 'registrasiPage.dart';
 import '../widgets/input_form.dart';
 import '../widgets/button.dart';
@@ -27,7 +27,7 @@ class _LoginpageState extends State<LoginPage> {
 
   Future<void> _signInWithEmailAndPassword() async {
     try {
-      await LoginViewModel().signInWithEmailAndPassword(
+      await AuthService().signInWithEmailAndPassword(
         email: _controllerEmail.text.trim(),
         password: _controllerPassword.text.trim(),
       );

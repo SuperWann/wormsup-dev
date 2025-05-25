@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wormsup_dev/models/riwayatPenyiraman.dart';
-import 'package:wormsup_dev/services/firebase_riwayatPenyiraman_service.dart';
+import 'package:wormsup_dev/services/firebase_user_service.dart';
 import 'package:wormsup_dev/views/main/notifikasi.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -11,11 +11,12 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  final RiwayatPenyiramanService _service = RiwayatPenyiramanService();
+  final UserService _userService = UserService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -52,7 +53,7 @@ class _HistoryPageState extends State<HistoryPage> {
           bottom: 80,
         ),
         child: StreamBuilder<List<RiwayatPenyiraman>>(
-          stream: _service.streamRiwayatPenyiraman(),
+          stream: _userService.streamRiwayatPenyiraman(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());

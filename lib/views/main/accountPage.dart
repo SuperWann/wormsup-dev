@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wormsup_dev/services/firebase_auth_service.dart';
+import 'package:wormsup_dev/services/firebase_user_service.dart';
 import 'package:wormsup_dev/views/auth/authPage.dart';
 import 'package:wormsup_dev/views/main/notifikasi.dart';
-import 'package:wormsup_dev/viewModel/login_view_model.dart';
 
 import 'editAccountPage.dart';
 import '../widgets/alert.dart';
@@ -16,13 +17,13 @@ class AccountPage extends StatefulWidget {
 }
 
 late User? currentUser;
-final users = FirebaseFirestore.instance.collectionGroup('users');
+// final users = FirebaseFirestore.instance.collectionGroup('users');
 
 class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();
-    currentUser = LoginViewModel().currUser;
+    currentUser = AuthService().currUser;
   }
 
   void _konfirmasiLogout() {
@@ -60,7 +61,10 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserService userService = UserService();
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -72,30 +76,10 @@ class _AccountPageState extends State<AccountPage> {
             fontSize: 24,
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              child: Icon(Icons.notifications_none_outlined, size: 30),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NotifikasiPage(),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
       ),
 
       body: StreamBuilder<DocumentSnapshot>(
-        stream:
-            FirebaseFirestore.instance
-                .collection("users")
-                .doc(currentUser!.uid)
-                .snapshots(),
+        stream: userService.streamUser(currentUser!.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final userData = snapshot.data!.data() as Map<String, dynamic>;
