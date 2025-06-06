@@ -191,10 +191,7 @@ class _MonitoringPageState extends State<MonitoringPage> {
                                   SizedBox(height: 25),
                                   StreamBuilder<DocumentSnapshot>(
                                     stream:
-                                        FirebaseFirestore.instance
-                                            .collection('perangkat')
-                                            .doc('esp32_1')
-                                            .snapshots(),
+                                        PerangkatService().streamDataSensor(),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasError) {
                                         debugPrint(
@@ -306,12 +303,19 @@ class _MonitoringPageState extends State<MonitoringPage> {
                                         );
                                       }
 
-                                      final dataPh = snapshot.data?['pH'];
+                                      final dataPh =
+                                          snapshot.data?['pH'].toDouble();
+                                      final double fixData =
+                                          dataPh < 0
+                                              ? 0
+                                              : dataPh > 14
+                                              ? 14
+                                              : dataPh;
 
                                       return CircularPercentage(
                                         centerText:
                                             statusPerangkat == true
-                                                ? dataPh.toString()
+                                                ? fixData.toString()
                                                 : '0',
                                         centerTextStyle: TextStyle(
                                           fontFamily: 'Montserrat',
@@ -322,7 +326,7 @@ class _MonitoringPageState extends State<MonitoringPage> {
                                         size: 250,
                                         currentPercentage:
                                             statusPerangkat == true
-                                                ? dataPh
+                                                ? fixData
                                                 : 0,
                                         maxPercentage: 14,
                                         backgroundStrokeWidth: 2,
