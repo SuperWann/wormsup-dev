@@ -69,41 +69,60 @@ class _HistoryPageState extends State<HistoryPage> {
               itemCount: dataRiwayat.length,
               itemBuilder: (context, index) {
                 final log = dataRiwayat[index];
-                return Card(
-                  color: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(color: Colors.black12, width: 0.5),
+                return Dismissible(
+                  key: Key(log.docId),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(Icons.delete, color: Colors.white),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                  margin: EdgeInsets.only(bottom: 12),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Kelembapan tanah berada di ${log.kelembapan}%, penyiraman otomatis dilakukan!",
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Text(
-                            log.waktu
-                                .toString(), // Format tanggal bisa ditambahkan
+                  onDismissed: (direction) {
+                    _userService.deleteRiwayatPenyiraman(log.docId);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Riwayat berhasil dihapus')),
+                    );
+                  },
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(color: Colors.black12, width: 0.5),
+                    ),
+                    margin: EdgeInsets.only(bottom: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Kelembapan tanah berada di ${log.kelembapan}%, penyiraman otomatis dilakukan!",
                             style: TextStyle(
                               fontFamily: 'Montserrat',
-                              fontSize: 12,
-                              color: Colors.grey[600],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 10),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              log.waktu
+                                  .toString(), // Format tanggal bisa ditambahkan
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

@@ -25,6 +25,17 @@ class UserService {
         );
   }
 
+  Future<void> deleteRiwayatPenyiraman(String docId) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection('riwayat_penyiraman')
+        .doc(docId)
+        .delete();
+  } catch (e) {
+    print('Error deleting document: $e');
+  }
+}
+
   Stream<DocumentSnapshot> streamUser(String uid) {
     return _usersRef.doc(uid).snapshots();
   }
