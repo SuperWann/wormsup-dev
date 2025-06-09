@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wormsup_dev/models/notifikasi.dart';
 import 'package:wormsup_dev/models/riwayatPenyiraman.dart';
 
 class UserService {
   final CollectionReference _riwayatPenyiramanRef = FirebaseFirestore.instance
       .collection('riwayat_penyiraman');
+  final CollectionReference _notifikasiRef = FirebaseFirestore.instance
+      .collection('notifikasi');
   final CollectionReference _usersRef = FirebaseFirestore.instance.collection(
     'users',
   );
 
-  Stream<List<RiwayatPenyiraman>> streamRiwayatPenyiraman() {
+  Stream<List<RiwayatPenyiramanModel>> streamRiwayatPenyiraman() {
     return _riwayatPenyiramanRef
         .orderBy('waktu', descending: true)
         .snapshots()
@@ -16,7 +19,25 @@ class UserService {
           (snapshot) =>
               snapshot.docs
                   .map(
-                    (doc) => RiwayatPenyiraman.fromFirestore(
+                    (doc) => RiwayatPenyiramanModel.fromFirestore(
+                      doc.id,
+                      doc.data() as Map<String, dynamic>,
+                    ),
+                  )
+                  .toList(),
+        );
+  }
+
+
+  Stream<List<NotifikasiModel>> streamNotifikasi() {
+    return _notifikasiRef
+        .orderBy('waktu', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs
+                  .map(
+                    (doc) => NotifikasiModel.fromFirestore(
                       doc.id,
                       doc.data() as Map<String, dynamic>,
                     ),
