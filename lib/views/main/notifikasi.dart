@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wormsup_dev/models/notifikasi.dart';
 import 'package:wormsup_dev/services/firebase_user_service.dart';
+import 'package:wormsup_dev/views/widgets/alert.dart';
 
 class NotifikasiPage extends StatefulWidget {
   const NotifikasiPage({super.key});
@@ -11,34 +12,11 @@ class NotifikasiPage extends StatefulWidget {
 
 class _NotifikasiPageState extends State<NotifikasiPage> {
   final UserService _userService = UserService();
-  final List<Map<String, dynamic>> logs = [
-    {
-      'pesan':
-          'Kelembapan tanah berada dibawah 15%. Segera hidupkan mesin penyiraman otomatis!',
-      'waktu': 'Sekarang',
-    },
-    {
-      'pesan': 'pH tanah dalam kondisi yang stabil yaitu 6.50',
-      'waktu': '30 menit yang lalu',
-    },
-    {
-      'pesan': 'Kelembapan tanah sudah mencapai titik stabil yaitu 25%',
-      'waktu': '1 jam yang lalu',
-    },
-    {
-      'pesan':
-          'Mesin penyiram otomatis sedang menyiram tanah yang kurang lembap.',
-      'waktu': '2 jam yang lalu',
-    },
-    {
-      'pesan': 'Kelembapan tanah berada dibawah 15%',
-      'waktu': '4 jam yang lalu',
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -49,6 +27,27 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
             fontSize: 24,
           ),
         ),
+        actions: [
+          IconButton(
+            padding: const EdgeInsets.only(right: 20),
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder:
+                    (context) => Confirm(
+                      message:
+                          'Apakah Anda yakin ingin menghapus semua notifikasi?',
+                      onPressed: () {
+                        _userService.deleteAllNotifikasi();
+                        Navigator.pop(context);
+                      },
+                      height: MediaQuery.of(context).size.height * 0.08,
+                    ),
+              );
+            },
+          ),
+        ],
       ),
       body: Scaffold(
         body: Padding(
@@ -61,7 +60,16 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
               }
 
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text('Belum ada riwayat penyiraman.'));
+                return Center(
+                  child: Text(
+                    'Tidak ada data',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                  ),
+                );
               }
 
               final dataRiwayat = snapshot.data!;
@@ -83,7 +91,7 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
                       ),
                     ),
                     onDismissed: (direction) {
-                      _userService.deleteRiwayatPenyiraman(log.docId);
+                      _userService.deleteNotifikasi(log.docId);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Notifikasi berhasil dihapus')),
                       );

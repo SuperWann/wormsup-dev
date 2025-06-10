@@ -28,7 +28,6 @@ class UserService {
         );
   }
 
-
   Stream<List<NotifikasiModel>> streamNotifikasi() {
     return _notifikasiRef
         .orderBy('waktu', descending: true)
@@ -46,16 +45,39 @@ class UserService {
         );
   }
 
-  Future<void> deleteRiwayatPenyiraman(String docId) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection('riwayat_penyiraman')
-        .doc(docId)
-        .delete();
-  } catch (e) {
-    print('Error deleting document: $e');
+  Future<void> deleteNotifikasi(String docId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('notifikasi')
+          .doc(docId)
+          .delete();
+    } catch (e) {
+      print('Error deleting document: $e');
+    }
   }
-}
+
+  Future<void> deleteAllNotifikasi() async {
+    try {
+      await _notifikasiRef.get().then((snapshot) async {
+        for (var doc in snapshot.docs) {
+          await doc.reference.delete();
+        }
+      });
+    } catch (e) {
+      print('Error deleting document: $e');
+    }
+  }
+
+  Future<void> deleteRiwayatPenyiraman(String docId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('riwayat_penyiraman')
+          .doc(docId)
+          .delete();
+    } catch (e) {
+      print('Error deleting document: $e');
+    }
+  }
 
   Stream<DocumentSnapshot> streamUser(String uid) {
     return _usersRef.doc(uid).snapshots();

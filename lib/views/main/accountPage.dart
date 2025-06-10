@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wormsup_dev/services/firebase_auth_service.dart';
 import 'package:wormsup_dev/services/firebase_user_service.dart';
 import 'package:wormsup_dev/views/auth/authPage.dart';
-import 'package:wormsup_dev/views/main/notifikasi.dart';
 
 import 'editAccountPage.dart';
 import '../widgets/alert.dart';

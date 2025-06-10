@@ -315,7 +315,8 @@ class _MonitoringPageState extends State<MonitoringPage> {
                                       return CircularPercentage(
                                         centerText:
                                             statusPerangkat == true
-                                                ? fixData.toString()
+                                                ? /*fixData.toString()*/ fixData
+                                                    .toStringAsFixed(2)
                                                 : '0',
                                         centerTextStyle: TextStyle(
                                           fontFamily: 'Montserrat',

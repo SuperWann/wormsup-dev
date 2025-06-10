@@ -5,8 +5,6 @@ import 'package:wormsup_dev/views/widgets/alert.dart';
 import 'package:wormsup_dev/views/widgets/button.dart';
 import 'package:wormsup_dev/views/widgets/input_form.dart';
 
-import '../../viewModel/register_view_model.dart';
-
 class TokenPage extends StatefulWidget {
   final String username;
   final String email;

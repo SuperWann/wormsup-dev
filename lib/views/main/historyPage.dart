@@ -21,11 +21,11 @@ class _HistoryPageState extends State<HistoryPage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          'History',
+          'Riwayat Penyiraman',
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w700,
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
         actions: [
@@ -52,7 +52,7 @@ class _HistoryPageState extends State<HistoryPage> {
           right: 20,
           bottom: 80,
         ),
-        child: StreamBuilder<List<RiwayatPenyiraman>>(
+        child: StreamBuilder<List<RiwayatPenyiramanModel>>(
           stream: _userService.streamRiwayatPenyiraman(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -60,7 +60,16 @@ class _HistoryPageState extends State<HistoryPage> {
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('Belum ada riwayat penyiraman.'));
+              return Center(
+                child: Text(
+                  'Tidak ada data',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+              );
             }
 
             final dataRiwayat = snapshot.data!;
